@@ -1,70 +1,80 @@
-CREATE TABLE gender (
-	id SERIAL PRIMARY KEY
+CREATE TABLE genders (
+	id SERIAL PRIMARY KEY,
 	meaning VARCHAR(30) NOT NULL UNIQUE
 );
 
-CREATE TABLE profession (
+CREATE TABLE professions (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(30) NOT NULL UNIQUE
 );
 
-CREATE TABLE country (
+CREATE TABLE countries (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(30) NOT NULL UNIQUE,
 	population INT,
-	ppp DOUBLE 
+	ppp INT 
 );
 
-CREATE TABLE town (
+CREATE TABLE towns (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(30) NOT NULL,
-	countryid INT REFERENCES country(id)
+	name VARCHAR(50) NOT NULL,
+	countryid INT REFERENCES countries(id)
 );
 
-CREATE TABLE hotel (
+CREATE TABLE hotels (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(30) NOT NULL,
+	name VARCHAR(50) NOT NULL,
 	capacity INT NOT NULL,
-	townid INT REFERENCES town(id)
+	townid INT REFERENCES towns(id)
+); -- constriction za kapacitet
+
+CREATE TABLE accelerators (
+	id SERIAL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL UNIQUE
 );
 
-CREATE TABLE accelerator (
+CREATE TABLE projects (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(30) NOT NULL UNIQUE
+	name VARCHAR(100) UNIQUE NOT NULL,
+	acceleratorid INT REFERENCES accelerators(id)
 );
 
-CREATE TABLE project (
+CREATE TABLE scientists (
 	id SERIAL PRIMARY KEY,
-	name VARCHAR(30),
-	acceleratorid INT REFERENCES accelerator(id)
+	firstname VARCHAR(50) NOT NULL,
+	lastname VARCHAR(50) NOT NULL,
+	birthdate TIMESTAMP NOT NULL,
+	genderid INT REFERENCES genders(id),
+	professionid INT REFERENCES professions(id),
+	countryid INT REFERENCES countries(id),
+	hotelid INT REFERENCES hotels(id)
 );
 
-CREATE TABLE scientist (
+CREATE TABLE scientificworks (
 	id SERIAL PRIMARY KEY,
-	firstname VARCHAR(30) NOT NULL,
-	lastname VARCHAR(30) NOT NULL,
-	genderid INT REFERENCES gender(id),
-	professionid INT REFERENCES profession(id),
-	countryid INT REFERENCES country(id),
-	hotelid INT REFERENCES hotel(id)
-);
-
-CREATE TABLE scientificwork (
-	id SERIAL PRIMARY KEY,
-	name VARCHAR(30) NOT NULL,
-	projectid INT REFERENCES project(id),
+	name VARCHAR(100) UNIQUE NOT NULL,
+	projectid INT REFERENCES projects(id),
 	timescited INT NOT NULL,
 	publishdate TIMESTAMP NOT NULL
 );
 
-CREATE TABLE scientistwork (
-	scientificworkid INT REFERENCES scientificwork(id),
-	scientistid INT REFERENCES scientist(id),
+CREATE TABLE scientistworks (
+	scientificworkid INT REFERENCES scientificworks(id),
+	scientistid INT REFERENCES scientists(id),
 	PRIMARY KEY(scientificworkid, scientistid)
 );
 
 
-
+drop table scientistworks
+drop table scientificworks
+drop table scientists
+drop table projects
+drop table accelerators
+drop table hotels
+drop table towns
+drop table countries
+drop table professions 
+drop table genders
 
 
 
