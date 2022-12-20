@@ -65,16 +65,6 @@ CREATE TABLE scientistworks (
 );
 
 
-drop table scientistworks
-drop table scientificworks
-drop table scientists
-drop table projects
-drop table accelerators
-drop table hotels
-drop table towns
-drop table countries
-drop table professions 
-drop table genders
 
 
 

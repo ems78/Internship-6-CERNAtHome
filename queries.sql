@@ -39,14 +39,14 @@ ORDER BY lastname, firstname;
 
 
 ----------------------------------------------------------------------------------------------------------------------------------------
---● svaku kombinaciju projekta i akceleratora, pri čemu nas zanimaju samo nazivi; u slučaju -------------  ne prikazuje NEMA GA -------
+--● svaku kombinaciju projekta i akceleratora, pri čemu nas zanimaju samo nazivi; u slučaju 
 --da projekt nije vezan ni za jedan akcelerator, svejedno ga ispiši uz ime akceleratora ‘NEMA GA’. 
 
 
 SELECT p.name AS projectname,
 		CASE
-			WHEN p.acceleratorid = null  -- not between 1 and 21 isto ne radi
-				THEN 'NEMA GA' 			-- ne pripoznaje null iako pise
+			WHEN p.acceleratorid is null 
+				THEN 'NEMA GA' 			
 			ELSE
 				a.name
 		END AS accelerator
@@ -60,7 +60,7 @@ FULL OUTER JOIN accelerators a ON p.acceleratorid = a.id;
 --● sve projekte kojima je bar jedan od radova izašao između 2015. i 2017.
 
 
-SELECT distinct p.id, p.name AS project, p.acceleratorid
+SELECT distinct p.id, p.name AS project
 FROM projects p
 INNER JOIN scientificworks scw ON p.id = scw.projectid
 WHERE scw.publishdate >= '2015-01-01' AND scw.publishdate < '2017-01-01'
@@ -81,7 +81,7 @@ SELECT co.name AS country,
 			INNER JOIN countries c ON c.id = s.countryid
 			WHERE c.id = co.id
 			GROUP BY c.id ),
-		(select  scw3.name as scientificwork
+		(SELECT  scw3.name as scientificwork
 				FROM scientificworks scw3
 				INNER JOIN scientistworks sw3 ON sw3.scientificworkid = scw3.id
 				INNER JOIN scientists s3 ON s3.id = sw3.scientistid
@@ -198,7 +198,7 @@ ORDER BY 4 DESC;
 
 
 SELECT * FROM scientificworks scw
-order by scw.timescited desc
+order BY scw.timescited DESC;
 
 
 SELECT s.firstname || ' ' || s.lastname AS scientist,
